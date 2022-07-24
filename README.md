@@ -1,16 +1,10 @@
 # matrix_client
 
-Matrix client for my synapse server
+Matrix client for my synapse server.
 
-## Getting Started
+## Goals
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- Store token between runs
+- Send/receive messages
+- Show list of rooms
+- Adaptive view for phones/tablets
