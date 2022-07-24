@@ -1,6 +1,6 @@
 # matrix_client
 
-A new Flutter project.
+Matrix client for my synapse server
 
 ## Getting Started
 
