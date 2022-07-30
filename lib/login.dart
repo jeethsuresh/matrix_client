@@ -64,25 +64,29 @@ class _RequestLoginScreenState extends State<LoginScreen> {
       ),
       Padding(
         padding: EdgeInsets.all(5.0),
-        child: RaisedButton(
+        child: ElevatedButton(
           onPressed: _loginButton,
           child: Text('Login'),
         ),
       ),
       Padding(padding: EdgeInsets.all(10.0)),
-          FutureBuilder<String>(
-            future: loginRequest(username, password, homeserver),
-            builder: (context, response) {
-              if (response.hasError) print(response.error);
+      FutureBuilder<String>(
+        future: loginRequest(username, password, homeserver),
+        builder: (context, response) {
+          if (response.hasError) print(response.error);
 
-              return response.hasData
-                  ? RichText(
-                      text: TextSpan(
-                          text: response.data,
-                          style: TextStyle(color: Colors.black)))
-                  : Center(child: buttonPressed ? CircularProgressIndicator() : Padding(padding: EdgeInsets.all(10.0)));
-            },
-          )    ]);
+          return response.hasData
+              ? RichText(
+                  text: TextSpan(
+                      text: response.data,
+                      style: TextStyle(color: Colors.black)))
+              : Center(
+                  child: buttonPressed
+                      ? CircularProgressIndicator()
+                      : Padding(padding: EdgeInsets.all(10.0)));
+        },
+      )
+    ]);
   }
 
   @override
