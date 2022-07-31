@@ -22,7 +22,9 @@ Future<String> loginRequest(
   var decodedBody = jsonDecode(resp.body);
 
   Hive.box('token').put('token', decodedBody["access_token"]);
-  Hive.box('token').put('homeserver', homeserver);
+  Hive.box('token').put('homeserver', decodedBody["home_server"]);
+  Hive.box('token').put('user_id', decodedBody["user_id"]);
+  Hive.box('token').put('device_id', decodedBody["device_id"]);
 
   JsonEncoder encoder = new JsonEncoder.withIndent('  ');
   String prettyprint = encoder.convert(resp.body);

@@ -10,7 +10,7 @@ void main() async {
   // We should only remove this once it's clear we dont' need to mess with
   // The login screen (or once we add a logout button)
   // For now, a hot reload will not clear the token, but a hot RESTART will (r vs R)
-  Hive.box('token').clear();
+  // Hive.box('token').clear();
   runApp(const MyApp());
 }
 
