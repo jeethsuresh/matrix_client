@@ -5,6 +5,12 @@ import 'package:hive_flutter/hive_flutter.dart';
 void main() async {
   await Hive.initFlutter();
   await Hive.openBox('token');
+  // TODO: remove this line once we're confident that everything works.
+  // This clears the Hive box that we use to store token and homeserver info
+  // We should only remove this once it's clear we dont' need to mess with
+  // The login screen (or once we add a logout button)
+  // For now, a hot reload will not clear the token, but a hot RESTART will (r vs R)
+  Hive.box('token').clear();
   runApp(const MyApp());
 }
 
