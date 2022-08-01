@@ -17,7 +17,17 @@ class _RequestConvoScreenState extends State<ConvoScreen> {
   Widget build(BuildContext context) {
     Widget content = _buildLayout();
     return Scaffold(
-      appBar: AppBar(title: Text("Test Main Screen")),
+      appBar: AppBar(
+        title: Text("Test Main Screen"),
+        actions: <Widget>[
+          FlatButton(
+            textColor: Colors.white,
+            onPressed: _logoutButton,
+            child: Text("Logout"),
+            shape: CircleBorder(side: BorderSide(color: Colors.transparent)),
+          ),
+        ],
+      ),
       body: ValueListenableBuilder<Box>(
         valueListenable: Hive.box('token').listenable(),
         builder: (context, box, widget) {
@@ -25,5 +35,9 @@ class _RequestConvoScreenState extends State<ConvoScreen> {
         },
       ),
     );
+  }
+
+  void _logoutButton() {
+    Hive.box('token').delete('token');
   }
 }
