@@ -26,6 +26,16 @@ Future<String> loginRequest(
   Hive.box('token').put('user_id', decodedBody["user_id"]);
   Hive.box('token').put('device_id', decodedBody["device_id"]);
 
+  //While we're here, let's also get the user's display name
+
+  final url2 = Uri.https(homeserver,
+      '_matrix/client/v3/profile/' + decodedBody["user_id"] + "/displayname");
+  final resp2 = await client.get(url2);
+  var decoded2 = jsonDecode(resp2.body);
+
+  print(decoded2["displayname"]);
+  Hive.box('token').put('displayname', decoded2['displayname']);
+
   JsonEncoder encoder = new JsonEncoder.withIndent('  ');
   String prettyprint = encoder.convert(resp.body);
   return prettyprint;
