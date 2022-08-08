@@ -5,7 +5,7 @@ Matrix client for my synapse server.
 ## Goals
 
 - Send/receive messages
-- Display convos in a list
+- Display convos in a navigable list (which works in both tablet and phone view)
 
 ## Current bugs/fixlist
 
