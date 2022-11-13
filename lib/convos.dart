@@ -51,11 +51,10 @@ class _RequestConvoScreenState extends State<ConvoScreen> {
       appBar: AppBar(
         title: Text("Test Main Screen"),
         actions: <Widget>[
-          FlatButton(
-            textColor: Colors.white,
+          TextButton(
+            style: ButtonStyle(),
             onPressed: _logoutButton,
             child: Text("Logout"),
-            shape: CircleBorder(side: BorderSide(color: Colors.transparent)),
           ),
         ],
       ),
