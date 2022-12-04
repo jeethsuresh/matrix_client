@@ -3,6 +3,7 @@ import 'package:matrix_client/convo_list.dart';
 import 'package:matrix_client/single_convo.dart';
 import 'package:matrix_client/convo_details.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'dart:developer';
 
 class ConvoScreen extends StatefulWidget {
   @override
@@ -18,7 +19,7 @@ class _RequestConvoScreenState extends State<ConvoScreen> {
   Widget _buildMobileLayout() {
     return ConvoList((convo) {
       Navigator.push(context,
-          MaterialPageRoute(builder: (context) => ConvoDetails(convo, false)));
+          MaterialPageRoute(builder: (context) => ConvoDetails(convo)));
     });
   }
 
@@ -36,7 +37,7 @@ class _RequestConvoScreenState extends State<ConvoScreen> {
               });
             }),
           )),
-      Flexible(flex: 3, child: ConvoDetails(_selectedConvo, true))
+      Flexible(flex: 3, child: ConvoDetails(_selectedConvo))
     ]);
   }
 
@@ -44,9 +45,7 @@ class _RequestConvoScreenState extends State<ConvoScreen> {
   Widget build(BuildContext context) {
     var shortestSide = MediaQuery.of(context).size.shortestSide;
 
-    Widget content = (shortestSide < kTabletBreakpoint)
-        ? _buildMobileLayout()
-        : _buildTabletLayout();
+    Widget content = _buildMobileLayout();
     return Scaffold(
       appBar: AppBar(
         title: Text("Test Main Screen"),

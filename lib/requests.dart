@@ -67,3 +67,37 @@ Future<List<Convo>> getConvosRequest() async {
 
   return convoList;
 }
+
+Future<List<String>> getMessagesRequest(String roomID) async {
+  var homeserver = (Hive.box('token').get('homeserver') is String)
+      ? Hive.box('token').get('homeserver')
+      : "";
+  var token = Hive.box('token').get('token') as String;
+
+  Map<String, String> headers = {"Authorization": "Bearer " + token};
+
+  final queryParameters = {
+    'limit': '20',
+    'dir': 'b',
+  };
+
+  final urlToPost = Uri.https(homeserver, '_matrix/client/r0/rooms/' + roomID + '/messages', queryParameters); 
+  print(urlToPost);
+  final client = http.Client();
+  final resp = await client.get(urlToPost, headers: headers);
+
+  var decodedBody = jsonDecode(resp.body);
+
+  //TODO: we need to turn this into a factory at some point, this is gross
+  final chunks = decodedBody["chunk"] as List<dynamic>;
+
+  var messageList = List<String>.empty(growable: true);
+
+
+  chunks.forEach((value) {
+    var message = value['content']['body'];
+    messageList.add(message);
+  });
+
+  return messageList;
+}
