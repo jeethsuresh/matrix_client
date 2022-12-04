@@ -1,4 +1,5 @@
-import 'dart:ffi';
+//import 'dart:ffi';
+import 'dart:convert';
 
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -23,6 +24,7 @@ class Convo {
     Convo toreturn = Convo(id);
 
     var stateArr = data["state"]["events"] as List<dynamic>;
+    var messageArr = data["timeline"]["events"] as List<dynamic>;
 
     var messageParticipants = <String>[];
 
@@ -116,6 +118,28 @@ class Convo {
       }
     }
 
+    ///// Process messages
+
+    var counter = 0;
+    messageArr.forEach((element) {
+      var mapElement = element as Map<String, dynamic>;
+      if (mapElement["state_key"] != null &&
+          mapElement["state_key"] as String != "") {
+        return;
+      }
+      var content = mapElement["content"] as Map<String, dynamic>;
+      var printts = mapElement["origin_server_ts"] as int;
+      if (counter > 100) {
+        return;
+      } else {
+        counter = counter + 1;
+      }
+      if (content["ciphertext"] != null) {
+        return;
+      }
+      print(json.encode(content) + " " + printts.toString());
+    });
+
     return toreturn;
   }
 }
@@ -125,6 +149,13 @@ class Convo_Event {
 
   final String type;
   final String text;
+}
+
+class Convo_Message extends Convo_Event {
+  Convo_Message(type, text, this.timestamp, this.author) : super(type, text);
+
+  final String timestamp;
+  final String author;
 }
 
 class Convo_Participant {
