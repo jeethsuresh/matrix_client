@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:hive_flutter/hive_flutter.dart';
 import 'single_convo.dart';
+import 'message.dart';
 
 Future<String> loginRequest(
     String username, String password, String homeserver) async {
@@ -68,7 +69,7 @@ Future<List<Convo>> getConvosRequest() async {
   return convoList;
 }
 
-Future<List<String>> getMessagesRequest(String roomID) async {
+Future<Map<String, dynamic>> getMessagesRequest(String roomID, String from) async {
   var homeserver = (Hive.box('token').get('homeserver') is String)
       ? Hive.box('token').get('homeserver')
       : "";
@@ -76,28 +77,18 @@ Future<List<String>> getMessagesRequest(String roomID) async {
 
   Map<String, String> headers = {"Authorization": "Bearer " + token};
 
-  final queryParameters = {
+  var queryParameters = {
     'limit': '20',
     'dir': 'b',
   };
 
+  if (from != "") {
+    queryParameters['from'] = from;
+  }
+
   final urlToPost = Uri.https(homeserver, '_matrix/client/r0/rooms/' + roomID + '/messages', queryParameters); 
-  print(urlToPost);
   final client = http.Client();
   final resp = await client.get(urlToPost, headers: headers);
 
-  var decodedBody = jsonDecode(resp.body);
-
-  //TODO: we need to turn this into a factory at some point, this is gross
-  final chunks = decodedBody["chunk"] as List<dynamic>;
-
-  var messageList = List<String>.empty(growable: true);
-
-
-  chunks.forEach((value) {
-    var message = value['content']['body'];
-    messageList.add(message);
-  });
-
-  return messageList;
+  return jsonDecode(resp.body);
 }
