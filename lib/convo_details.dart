@@ -1,8 +1,10 @@
 import 'single_convo.dart';
 import 'package:flutter/material.dart';
 import 'requests.dart';
+import 'message.dart';
 
-final messages = <String>[];
+List<Message> messages = <Message>[];
+String end = "";
 
 class ConvoDetails extends StatefulWidget {
   final Convo convo;
@@ -15,16 +17,23 @@ class ConvoDetails extends StatefulWidget {
 
 class _ConvoDetailsState extends State<ConvoDetails> {
   void updateMessages() async {
-    var m = await getMessagesRequest(widget.convo.id);
-    print(m);
-    messages.addAll(m);
+    var m = await getMessagesRequest(widget.convo.id, end);
+
+    end = m["end"] as String;
+    final chunks = m["chunk"] as List<dynamic>;
+
+    chunks.forEach((value) {
+      var message = value['content']['body'];
+      var sender = value['sender'];
+      messages.add(Message(message, sender));
+    });
     setState(() {
               _messages = messages;
        });
   }
 
 
-  late List<String> _messages;
+  late List<Message> _messages;
 
   Widget build(BuildContext context) {
     updateMessages();
@@ -39,7 +48,7 @@ class _ConvoDetailsState extends State<ConvoDetails> {
                 //TODO: have this change when the box for rooms changes
 
                 return ListTile(
-                    title: Text(_messages[index])
+                    title: Text(_messages[index].sender + ": " + _messages[index].content)
                     );
               })))
     ]);
