@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:matrix_client/requests.dart';
 
 class LoginScreen extends StatefulWidget {
+  const LoginScreen({Key? key}) : super(key: key);
+
   @override
   _RequestLoginScreenState createState() => _RequestLoginScreenState();
 }
@@ -28,48 +30,48 @@ class _RequestLoginScreenState extends State<LoginScreen> {
   Widget _buildLayout() {
     return Column(children: <Widget>[
       Padding(
-        padding: EdgeInsets.all(10.0),
+        padding: const EdgeInsets.all(10.0),
         child: TextField(
           obscureText: false,
           controller: usernameController,
           maxLines: null,
-          decoration: InputDecoration(
+          decoration: const InputDecoration(
             border: OutlineInputBorder(),
             labelText: 'Username',
           ),
         ),
       ),
       Padding(
-        padding: EdgeInsets.all(10.0),
+        padding: const EdgeInsets.all(10.0),
         child: TextField(
           controller: passwordController,
           obscureText: true,
           maxLines: 1,
-          decoration: InputDecoration(
+          decoration: const InputDecoration(
             border: OutlineInputBorder(),
             labelText: 'Password',
           ),
         ),
       ),
       Padding(
-        padding: EdgeInsets.all(10.0),
+        padding: const EdgeInsets.all(10.0),
         child: TextField(
           controller: homeserverController,
           maxLines: 1,
-          decoration: InputDecoration(
+          decoration: const InputDecoration(
             border: OutlineInputBorder(),
             labelText: 'Homeserver',
           ),
         ),
       ),
       Padding(
-        padding: EdgeInsets.all(5.0),
+        padding: const EdgeInsets.all(5.0),
         child: ElevatedButton(
           onPressed: _loginButton,
-          child: Text('Login'),
+          child: const Text('Login'),
         ),
       ),
-      Padding(padding: EdgeInsets.all(10.0)),
+      const Padding(padding: EdgeInsets.all(10.0)),
       FutureBuilder<String>(
         future: loginRequest(username, password, homeserver),
         builder: (context, response) {
@@ -79,11 +81,11 @@ class _RequestLoginScreenState extends State<LoginScreen> {
               ? RichText(
                   text: TextSpan(
                       text: response.data,
-                      style: TextStyle(color: Colors.black)))
+                      style: const TextStyle(color: Colors.black)))
               : Center(
                   child: buttonPressed
-                      ? CircularProgressIndicator()
-                      : Padding(padding: EdgeInsets.all(10.0)));
+                      ? const CircularProgressIndicator()
+                      : const Padding(padding: EdgeInsets.all(10.0)));
         },
       )
     ]);
@@ -93,7 +95,7 @@ class _RequestLoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     Widget content = _buildLayout();
     return Scaffold(
-      appBar: AppBar(title: Text("Test Login Screen")),
+      appBar: AppBar(title: const Text("Test Login Screen")),
       body: content,
     );
   }

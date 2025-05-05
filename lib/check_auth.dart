@@ -7,11 +7,11 @@ StatefulWidget checkAuth() {
   var getToken = Hive.box('token').get('token');
   if (getToken != null && getToken is String) {
     if (getToken == "") {
-      return LoginScreen();
+      return const LoginScreen();
     } else {
       print("******" + getToken);
-      return ConvoScreen();
+      return const ConvoScreen();
     }
   }
-  return LoginScreen();
+  return const LoginScreen();
 }

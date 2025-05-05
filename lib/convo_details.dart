@@ -9,7 +9,7 @@ String end = "";
 class ConvoDetails extends StatefulWidget {
   final Convo convo;
 
-  ConvoDetails(this.convo);
+  const ConvoDetails(this.convo, {Key? key}) : super(key: key);
   @override
   _ConvoDetailsState createState() => _ConvoDetailsState();
 }
@@ -22,11 +22,11 @@ class _ConvoDetailsState extends State<ConvoDetails> {
     end = m["end"] as String;
     final chunks = m["chunk"] as List<dynamic>;
 
-    chunks.forEach((value) {
+    for (var value in chunks) {
       var message = value['content']['body'];
       var sender = value['sender'];
       messages.add(Message(message, sender));
-    });
+    }
     setState(() {
               _messages = messages;
        });
@@ -35,6 +35,7 @@ class _ConvoDetailsState extends State<ConvoDetails> {
 
   late List<Message> _messages;
 
+  @override
   Widget build(BuildContext context) {
     updateMessages();
     _messages = messages;

@@ -7,8 +7,8 @@ final convo_list = <Convo>[];
 
 class ConvoList extends StatelessWidget {
   ConvoList(
-    this.requestSelectedCallback,
-  ) {
+    this.requestSelectedCallback, {Key? key}
+  ) : super(key: key) {
     updateConvoList();
   }
 
@@ -19,9 +19,10 @@ class ConvoList extends StatelessWidget {
 
   final ValueChanged<Convo> requestSelectedCallback;
 
+  @override
   Widget build(BuildContext context) {
     Convo selectedRequest =
-        (convo_list.length > 0) ? convo_list[0] : Convo("Loading...");
+        (convo_list.isNotEmpty) ? convo_list[0] : Convo("Loading...");
     return Column(children: <Widget>[
       Expanded(
           child: ListView.builder(

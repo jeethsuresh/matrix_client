@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:hive_flutter/hive_flutter.dart';
 import 'single_convo.dart';
-import 'message.dart';
 
 Future<String> loginRequest(
     String username, String password, String homeserver) async {
@@ -13,14 +12,33 @@ Future<String> loginRequest(
     "type": "m.login.password"
   };
 
-  final urlToPost = Uri.https(homeserver, '_matrix/client/r0/login');
+  if(homeserver == null || homeserver == "") {
+    return "Homeserver is null";
+  }
+
+  
+  final urlToPost = Uri.https(homeserver, '/_matrix/client/r0/login');
+  print("URL TO POST: " + urlToPost.toString());
   final client = http.Client();
   final resp = await client.post(
     urlToPost,
     body: jsonEncode(body),
+    headers: {
+      "Content-Type": "application/json",
+    },
   );
+  print("getting here?");
+  if (resp.statusCode == 200) {
+    print('Login successful: ${resp.body}');
+  } else {
+    print('Failed to login: ${resp.statusCode} - ${resp.body}');
+  }
+
+  print("Response body: ${resp.body}");
+
 
   var decodedBody = jsonDecode(resp.body);
+
 
   Hive.box('token').put('token', decodedBody["access_token"]);
   Hive.box('token').put('homeserver', decodedBody["home_server"]);
@@ -28,6 +46,8 @@ Future<String> loginRequest(
   Hive.box('token').put('device_id', decodedBody["device_id"]);
 
   //While we're here, let's also get the user's display name
+
+
 
   final url2 = Uri.https(homeserver,
       '_matrix/client/v3/profile/' + decodedBody["user_id"] + "/displayname");
@@ -37,7 +57,7 @@ Future<String> loginRequest(
   print(decoded2["displayname"]);
   Hive.box('token').put('displayname', decoded2['displayname']);
 
-  JsonEncoder encoder = new JsonEncoder.withIndent('  ');
+  JsonEncoder encoder = const JsonEncoder.withIndent('  ');
   String prettyprint = encoder.convert(resp.body);
   return prettyprint;
 }
@@ -89,6 +109,7 @@ Future<Map<String, dynamic>> getMessagesRequest(String roomID, String from) asyn
   final urlToPost = Uri.https(homeserver, '_matrix/client/r0/rooms/' + roomID + '/messages', queryParameters); 
   final client = http.Client();
   final resp = await client.get(urlToPost, headers: headers);
+  
 
   return jsonDecode(resp.body);
 }

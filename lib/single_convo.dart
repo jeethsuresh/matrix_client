@@ -28,7 +28,7 @@ class Convo {
 
     var messageParticipants = <String>[];
 
-    stateArr.forEach((element) {
+    for (var element in stateArr) {
       var mapElement = element as Map<String, dynamic>;
 
       var content = mapElement["content"] as Map<String, dynamic>;
@@ -99,7 +99,7 @@ class Convo {
           }
           break;
       }
-    });
+    }
 
     if (toreturn.name == "") {
       var participantsName = <String>[];
@@ -111,7 +111,7 @@ class Convo {
         }
       }
       //TODO: heroes
-      if (participantsName.length > 0) {
+      if (participantsName.isNotEmpty) {
         toreturn.name = participantsName.join(",");
       } else {
         toreturn.name = "Empty room";
@@ -121,24 +121,24 @@ class Convo {
     ///// Process messages
 
     var counter = 0;
-    messageArr.forEach((element) {
+    for (var element in messageArr) {
       var mapElement = element as Map<String, dynamic>;
       if (mapElement["state_key"] != null &&
           mapElement["state_key"] as String != "") {
-        return;
+        continue;
       }
       var content = mapElement["content"] as Map<String, dynamic>;
       var printts = mapElement["origin_server_ts"] as int;
       if (counter > 100) {
-        return;
+        continue;
       } else {
         counter = counter + 1;
       }
       if (content["ciphertext"] != null) {
-        return;
+        continue;
       }
       print(json.encode(content) + " " + printts.toString());
-    });
+    }
 
     return toreturn;
   }

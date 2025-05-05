@@ -3,9 +3,10 @@ import 'package:matrix_client/convo_list.dart';
 import 'package:matrix_client/single_convo.dart';
 import 'package:matrix_client/convo_details.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'dart:developer';
 
 class ConvoScreen extends StatefulWidget {
+  const ConvoScreen({Key? key}) : super(key: key);
+
   @override
   _RequestConvoScreenState createState() => _RequestConvoScreenState();
 }
@@ -25,7 +26,7 @@ class _RequestConvoScreenState extends State<ConvoScreen> {
 
   Widget _buildTabletLayout() {
     _selectedConvo =
-        (convo_list.length > 0) ? convo_list[0] : Convo("Loading...");
+        (convo_list.isNotEmpty) ? convo_list[0] : Convo("Loading...");
     return Row(children: <Widget>[
       Flexible(
           flex: 1,
@@ -48,12 +49,12 @@ class _RequestConvoScreenState extends State<ConvoScreen> {
     Widget content = _buildMobileLayout();
     return Scaffold(
       appBar: AppBar(
-        title: Text("Test Main Screen"),
+        title: const Text("Test Main Screen"),
         actions: <Widget>[
           TextButton(
-            style: ButtonStyle(),
+            style: const ButtonStyle(),
             onPressed: _logoutButton,
-            child: Text("Logout"),
+            child: const Text("Logout"),
           ),
         ],
       ),
